@@ -11,12 +11,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Install SDK and NDK
-        run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager "platforms;android-36" "ndk;27.2.12479018"
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platforms;android-36 ndk;27.2.12479018 build-tools;36.0.0"
       - name: Build
-        run: ./gradlew :TMessagesProj_App:assembleAfatDebug
+        run: |
+          chmod +x gradlew
+          ./gradlew :TMessagesProj_App:assembleAfatDebug
       - uses: actions/upload-artifact@v4
         with:
           name: apk
